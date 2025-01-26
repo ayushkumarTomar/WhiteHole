@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet, ScrollView, SafeAreaView, Button, TouchableOpacity } from 'react-native';
 import { Montserrat_500Medium, Montserrat_600SemiBold, Montserrat_700Bold, useFonts } from '@expo-google-fonts/montserrat';
 import { getLastSession, getPlaylists } from '@/lib/storage';
 import { s, vs } from 'react-native-size-matters';
@@ -36,6 +36,7 @@ const Library = () => {
     iffy();
   }, []);
 
+  // if (!fontsLoaded || playlists == null) return <Loading />;
 
   return (
     <SafeAreaProvider>
@@ -46,6 +47,7 @@ const Library = () => {
         />
         <ScrollView>
           <View style={styles.header}>
+          {/* <MaterialCommunityIcons name="book-music-outline" size={24} color="white" /> */}
 
             <Entypo name="folder-music" size={24} color="white" />
             <Text style={styles.headerText}>

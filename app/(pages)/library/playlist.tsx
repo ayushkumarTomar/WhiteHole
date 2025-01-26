@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,8 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Image
+  ToastAndroid,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Loading from '@/components/loading';
@@ -86,6 +87,7 @@ const AddToPlaylistScreen = () => {
   }, []);
   if (!fontsLoaded || isLoading) return <Loading />;
   const savePlayListToStorage = async (playlistName: string) => {
+    //save playlist empty
   }
 
   const handleDelete = (playListId: string) => {
@@ -94,14 +96,14 @@ const AddToPlaylistScreen = () => {
       deletePlaylist(playListId);
     };
 
-  const renderHeader = useMemo(() => (
+  const renderHeader = () => (
     <View style={styles.albumHeader}>
       <Text style={styles.playlistHeader}>PlayLists</Text>
       <TouchableOpacity style={styles.createPlaylist} onPress={() => setModalVisible(true)}>
         <Ionicons name="add-circle-outline" size={30} color="white" />
       </TouchableOpacity>
     </View>
-  ) , [])
+  );
 
 
   return (

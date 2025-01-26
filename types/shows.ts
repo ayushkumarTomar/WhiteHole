@@ -84,7 +84,7 @@ type MoreInfo = {
   encrypted_media_url: string;
 };
 
-export type Episode = {
+type Episode = {
   id: string;
   title: string;
   subtitle: string;
@@ -100,7 +100,8 @@ export type Episode = {
   list_type: string;
   list: string;
   more_info: MoreInfo;
-  button_tooltip_info: any[];  
+  button_tooltip_info: any[];  // Assuming button_tooltip_info is an array
 };
 
+// Define a type for the list of episodes
 export type EpisodeList = Episode[];

@@ -43,7 +43,9 @@ interface Store {
  
 }
 
+// Zustand store with TypeScript types
 const useMediaStore = create<Store>((set) => ({
+  // Authentication state
   user: null,
   token: null,
   songLoading:false,
@@ -69,6 +71,7 @@ const useMediaStore = create<Store>((set) => ({
 
   setBuffering: (buffering) => set({isBuffering:buffering}) ,
 
+  // Actions
   setPlayback: async(isPlaying) => {
     console.log("Called me")
     if(isPlaying) 

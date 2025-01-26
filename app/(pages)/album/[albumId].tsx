@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, Image, SafeAreaView, TouchableOpacity , ToastAndroid } from 'react-native';
-import { useCallback, useMemo, useState } from 'react';
+import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 import { getAlbumDetails } from '@/lib/api';
@@ -14,8 +14,8 @@ import ContextMenu from '@/components/contextMenu';
 
 const AlbumScreen = () => {
   const { albumId } = useLocalSearchParams<{ albumId: string }>();
-  const [contextMenuVisible, setContextMenuVisible] = useState(false);
-  const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
+  const [contextMenuVisible, setContextMenuVisible] = React.useState(false);
+  const [selectedSongId, setSelectedSongId] = React.useState<string | null>(null);
   const [fontsLoaded] = useFonts({ Raleway_500Medium });
 
   const { data: albumData, isLoading } = useQuery({
@@ -26,55 +26,55 @@ const AlbumScreen = () => {
   const {addTrack}  = useMediaStore()
 
   if (isLoading || !albumData || !fontsLoaded) return  <Loading />
-  const imageLink = useMemo(() => {
-    if (!albumData?.image) return '';
-    return albumData.image.replace(/-(\d{3})x(\d{3})(?=\.\w+($|\?))/, "-500x500");
-  }, [albumData?.image]);
-  const playAllSongs = useCallback(() => {
-    console.log('Playing all songs...');
-  }, []);
-  
-  const handleContextMenu = useCallback(
-    async (value: any, songId: string) => {
-      if (value === 1) {
-        await addTrack(songId, "playNext");
-        ToastAndroid.show("Playing Next", ToastAndroid.SHORT);
-      }
-      if (value === 2) {
-        await addTrack(songId, "addToQueue");
-        ToastAndroid.show("Added to Queue", ToastAndroid.SHORT);
-      }
-      if (value === 3 && selectedSongId) {
-        router.push({ pathname: `/(pages)/playlist/addToPlayList`, params: { songId: selectedSongId } });
-      }
-    },
-    [addTrack, router, selectedSongId]
-  );
-  
-  const onLongPressSong = useCallback((songId: string) => {
-    setSelectedSongId(songId);
-    setContextMenuVisible(true);
-  }, []);
-  
+  const imageLink50 = albumData.image;
+  const imageLink = imageLink50.replace(/-(\d{3})x(\d{3})(?=\.\w+($|\?))/, "-500x500");
 
-    const renderHeader = useMemo(() => (
-      <View style={styles.albumHeader}>
-        <LinearGradient
-          colors={['rgba(14, 14, 14, 0.00)', 'rgba(16, 43, 45, 0.94)', 'rgba(6, 160, 181, 0)']}
-          style={styles.gradient}
-        />
-        <Text style={styles.playlistHeader}>Album</Text>
-        <Image source={{ uri: imageLink }} style={styles.albumCover} />
-        <Text style={styles.albumTitle}>{albumData?.title}</Text>
-        <Text style={styles.artistName}>{albumData.primary_artists}</Text>
-        <Text style={styles.songCount}>{`${albumData.songs.length} Songs`}</Text>
-    
-        <TouchableOpacity style={styles.playAllButton} onPress={playAllSongs}>
-          <Text style={styles.playAllText}>Play All</Text>
-        </TouchableOpacity>
-      </View>
-    ), [albumData, imageLink]);
-    
+  const playAllSongs = () => {
+      console.log('Playing all songs...');
+    };
+  
+    const handleContextMenu = async(value:any , songId:string)=>{
+      if(value==1) {
+        await addTrack(songId , "playNext");
+        ToastAndroid.show("Playing Next", ToastAndroid.SHORT)
+      }
+      if(value==2) {
+        await addTrack(songId , "addToQueue");
+        ToastAndroid.show("Added to Queue", ToastAndroid.SHORT)
+      }
+      if(value==3){
+        if(selectedSongId) {
+  
+          //@ts-ignore
+          router.push({pathname:`/(pages)/playlist/addToPlayList` , params:{songId:selectedSongId}})
+        }
+  
+        
+      }
+    }
+  
+    const onLongPressSong = (songId: string) => {
+      setSelectedSongId(songId);
+      setContextMenuVisible(true);
+    };
+
+  const renderHeader = () => (
+    <View style={styles.albumHeader}>
+      <LinearGradient
+        colors={['rgba(14, 14, 14, 0.00)', 'rgba(16, 43, 45, 0.94)', 'rgba(6, 160, 181, 0)']}
+        style={styles.gradient}
+      />
+      <Text style={styles.playlistHeader}>Album</Text>
+      <Image source={{ uri: imageLink }} style={styles.albumCover} />
+      <Text style={styles.albumTitle}>{albumData?.title}</Text>
+      <Text style={styles.artistName}>{albumData.primary_artists}</Text>
+      <Text style={styles.songCount}>{`${albumData.songs.length} Songs`}</Text>
+
+      <TouchableOpacity style={styles.playAllButton} onPress={playAllSongs}>
+        <Text style={styles.playAllText}>Play All</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <SafeAreaProvider>

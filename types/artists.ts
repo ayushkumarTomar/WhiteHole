@@ -25,10 +25,13 @@ export type ArtistInfo = {
     isVerified: boolean;
     dominantLanguage: string;
     dominantType: string;
-    topSongs:ArtistTopSong[];
+    topSongs: {
+      songs: Song[];
+      total: number;
+    };
     topAlbums: {
       albums: TopAlbumAritst[];
-      // total: number;
+      total: number;
     };
     similarArtists: any[]; // This is an empty array in the example, adjust based on future data
     isRadioPresent: boolean;
@@ -60,74 +63,4 @@ export type ArtistSearch = {
   ctr: number;
   entity: number;
   position: number;
-};
-
-
-export type Artist = {
-  id: string;
-  name: string;
-  role: string;
-  image: string;
-  type: "artist";
-  perma_url: string;
-};
-
-export type Rights = {
-  code: string;
-  cacheable: string;
-  delete_cached_object: string;
-  reason: string;
-};
-
-export type MoreInfo = {
-  music: string;
-  album_id: string;
-  album: string;
-  label: string;
-  label_id: string | null;
-  origin: string;
-  is_dolby_content: boolean;
-  "320kbps": string;
-  encrypted_media_url: string;
-  encrypted_cache_url: string;
-  encrypted_drm_cache_url: string;
-  encrypted_drm_media_url: string;
-  album_url: string;
-  duration: string;
-  rights: Rights;
-  cache_state: string;
-  has_lyrics: string;
-  lyrics_snippet: string;
-  starred: string;
-  copyright_text: string;
-  artistMap: {
-    primary_artists: Artist[];
-    featured_artists: Artist[];
-    artists: Artist[];
-  };
-  release_date: string | null;
-  label_url: string;
-  vcode: string;
-  vlink: string;
-  triller_available: boolean;
-  request_jiotune_flag: boolean;
-  webp: string;
-};
-
-export type ArtistTopSong = {
-  id: string;
-  title: string;
-  subtitle: string;
-  header_desc: string;
-  type: "song";
-  perma_url: string;
-  image: string;
-  language: string;
-  year: string;
-  play_count: string;
-  explicit_content: string;
-  list_count: string;
-  list_type: string;
-  list: string;
-  more_info: MoreInfo;
 };

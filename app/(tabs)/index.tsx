@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ScrollView, Image, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
@@ -7,16 +7,16 @@ import { s, vs } from 'react-native-size-matters';
 import { Montserrat_700Bold, useFonts, Montserrat_600SemiBold, Montserrat_500Medium } from '@expo-google-fonts/montserrat';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import songs from "@/assets/data/songs";
 import ContinueChart from '@/components/continue';
 import TrendingChart from '@/components/charts';
 import { useQuery } from '@tanstack/react-query';
-import { getModules, getTopArtists } from '@/lib/api';
+import { getModules } from '@/lib/api';
+import PlayList from '@/components/search';
 import Loading from '@/components/loading';
 import { getLastSession } from '@/lib/storage';
 import { launchData } from '@/types/launchData';
-import TopArtist from '@/components/topArtist';
-import { TopArtistsResponse } from '@/types/artists';
-import { Track } from '@/lib/mediaProcess';
+import { Track } from 'react-native-track-player';
 
 const Home = () => {
   const [fontsLoaded] = useFonts({
@@ -29,11 +29,6 @@ const Home = () => {
   const { data, error, isLoading } = useQuery<launchData, Error>({
     queryKey: ['modules'],
     queryFn: getModules,
-  });
-
-  const { data:TopArtistData} = useQuery<TopArtistsResponse, Error>({
-    queryKey: ['topartists'],
-    queryFn: getTopArtists,
   });
 
   useEffect(() => {
@@ -60,13 +55,13 @@ const Home = () => {
       <SafeAreaView style={styles.container}>
         <LinearGradient
           colors={[
-            'rgba(14, 14, 14, 0.00)', 
-            'rgba(16, 43, 45, 0.94)', 
-            'rgba(6, 160, 181, 0)',  
+            'rgba(14, 14, 14, 0.00)', // Transparent black
+            'rgba(16, 43, 45, 0.94)', // Dark teal
+            'rgba(6, 160, 181, 0)',   // Bright cyan
           ]}
           style={styles.gradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}   
+          start={{ x: 0, y: 0 }} // Start from the top
+          end={{ x: 0, y: 1 }}   // End at the bottom
         />
 
         <ScrollView>
@@ -87,10 +82,9 @@ const Home = () => {
           <TrendingChart continueListeningData={new_trending || []} title="Trending" type="new_trending" />
           <TrendingChart continueListeningData={top_playlists || []} title="Handpicked Playlists" type="top_playlists" />
           <TrendingChart continueListeningData={new_albums || []} title="New Albums" type="new_albums" />
-          {/* <TrendingChart continueListeningData={browse_discover || []} title="Discover" type="browse_discover" /> */}
+          <TrendingChart continueListeningData={browse_discover || []} title="Discover" type="browse_discover" />
           <TrendingChart continueListeningData={charts || []} title="Charts" type="charts" />
-          {TopArtistData && <TopArtist data={TopArtistData} title='Top Artists'/>}
-          {/* <TrendingChart continueListeningData={radio || []} title="Radio" type="radio" /> */}
+          <TrendingChart continueListeningData={radio || []} title="Radio" type="radio" />
 
           <View style={{ marginBottom: vs(50), flex: 1 }} />
         </ScrollView>
@@ -99,6 +93,7 @@ const Home = () => {
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

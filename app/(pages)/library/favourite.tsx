@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import Loading from '@/components/loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { s, vs } from 'react-native-size-matters';
+import { ms, s, vs } from 'react-native-size-matters';
 import { Raleway_500Medium, useFonts } from '@expo-google-fonts/raleway';
 import { getFavourites, removeFavourite } from '@/lib/storage';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -75,14 +75,11 @@ const Favourites = () => {
 
   if (!fontsLoaded || isLoading) return <Loading />;
 
-   const renderHeader = useMemo(
-      () => (
-        <View style={styles.albumHeader}>
-          <Text style={styles.playlistHeader}>Downloads</Text>
-        </View>
-      ),
-      []
-    )
+  const renderHeader = () => (
+    <View style={styles.albumHeader}>
+      <Text style={styles.playlistHeader}>Favourites</Text>
+    </View>
+  );
 
   const handleDelete = (songId: string) => {
     console.log("delteting", songId)

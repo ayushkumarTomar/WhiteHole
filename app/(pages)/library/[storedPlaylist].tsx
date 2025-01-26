@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, Image, SafeAreaView, TouchableOpacity , ToastAndroid } from 'react-native';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import Loading from '@/components/loading';
 import { s, vs } from 'react-native-size-matters';
@@ -25,51 +25,54 @@ const PlaylistScreen = () => {
       setIsLoading(false);
     };
     loadPlaylist();
-  }, [storedPlaylist]);
+  }, []);
 
 
   const {addTrack}  = useMediaStore()
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   if (isLoading || !playlist || !fontsLoaded) return <Loading />
-  const imageLink = useMemo(() => {
-    if (!playlist?.artwork) return '';
-    return playlist.artwork.replace(/-(\d{3})x(\d{3})(?=\.\w+($|\?))/, "-500x500");
-  }, [playlist?.artwork]);
+  console.log("Playlist  ARTWORK:: " , playlist.artwork)
+  const imageLink50 = playlist.artwork;
+  const imageLink = imageLink50.replace(/-(\d{3})x(\d{3})(?=\.\w+($|\?))/, "-500x500");
 
-  const playAllSongs = useCallback(() => {
+  const playAllSongs = () => {
     console.log('Playing all songs...');
-  }, [playlist?.songs]);
-  
-  const handleContextMenu = useCallback(async (value: any, songId: string) => {
-    if (value === 1) {
-      await addTrack(songId, "playNext");
-      ToastAndroid.show("Playing Next", ToastAndroid.SHORT);
+  };
+
+  const handleContextMenu = async(value:any , songId:string)=>{
+    if(value==1) {
+      await addTrack(songId , "playNext");
+      ToastAndroid.show("Playing Next", ToastAndroid.SHORT)
     }
-    if (value === 2) {
-      await addTrack(songId, "addToQueue");
-      ToastAndroid.show("Added to Queue", ToastAndroid.SHORT);
+    if(value==2) {
+      await addTrack(songId , "addToQueue");
+      ToastAndroid.show("Added to Queue", ToastAndroid.SHORT)
     }
-    if (value === 3 && selectedSongId) {
-      console.log('Deleting song from playlist:', selectedSongId);
-      await deleteSongFromPlaylist(storedPlaylist, selectedSongId);
-      setPlaylists((prev) => {
-        if (prev?.songs.length) {
-          return {
-            ...prev,
-            songs: prev.songs.filter((s) => s.songId !== selectedSongId),
-          };
-        }
-        return prev;
-      });
+    if(value==3){
+      if(selectedSongId) {
+        console.log('Deleting song from playlist:', selectedSongId);
+        await deleteSongFromPlaylist(storedPlaylist, selectedSongId);
+        setPlaylists((prev) => {
+          if (prev?.songs.length) {
+            return {
+              ...prev,
+              songs: prev.songs.filter((s) => s.songId !== selectedSongId),
+            };
+          }
+          return prev;
+        });      
+      }
+
+
+      
     }
-  }, [selectedSongId, storedPlaylist, addTrack]);
-  
-  const onLongPressSong = useCallback((songId: string) => {
+  }
+
+  const onLongPressSong = (songId: string) => {
     setSelectedSongId(songId);
     setContextMenuVisible(true);
-  }, []);
-  
+  };
   
 
 
@@ -242,7 +245,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Raleway_500Medium',
     color: '#696969',
     fontSize: vs(8),
-  }
+  },
 });
 
 export default PlaylistScreen;

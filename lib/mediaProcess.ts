@@ -13,31 +13,36 @@ export function parseString(name:string){
 }
 
 export function decryptUrl(encryptedUrl: string, key: string) {
+  // Decrypt the base64-encoded URL using DES
   const bytes = CryptoJS.DES.decrypt(encryptedUrl, CryptoJS.enc.Utf8.parse(key), {
-    iv: CryptoJS.enc.Utf8.parse('0000000000000000'), 
+    iv: CryptoJS.enc.Utf8.parse('0000000000000000'), // padding (zero)
     mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7, 
+    padding: CryptoJS.pad.Pkcs7, // Same padding as in pyDes in Python
   });
 
   const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-  return decrypted.replace("_96.mp4", "_320.mp4"); 
+  return decrypted.replace("_96.mp4", "_320.mp4"); // Adjust as in Python
 }
 
 
 export function processMediaUrls(data: any) {
   try {
-    const decryptedMediaUrl = decryptUrl(data.encrypted_media_url, '38346591'); 
+    // Decrypt the media URL
+    const decryptedMediaUrl = decryptUrl(data.encrypted_media_url, '38346591'); // Use the same key from Python
     data.media_url = decryptedMediaUrl;
 
+    // Adjust URL based on 320kbps flag
     if (data['320kbps'] !== "true") {
       data.media_url = data.media_url.replace("_320.mp4", "_160.mp4");
     }
 
+    // Update media preview URL
     data.media_preview_url = data.media_url
       .replace("_320.mp4", "_96_p.mp4")
       .replace("_160.mp4", "_96_p.mp4")
       .replace("//aac.", "//preview.");
   } catch (error) {
+    // Fallback logic for failed decryption or missing keys
     let url = data.media_preview_url || '';
     if (url) {
       url = url.replace("preview", "aac");

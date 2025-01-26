@@ -110,19 +110,4 @@ export type launchData = {
 }
 
 
-export type Item = {
-  id: string;
-  title: string;
-  action: string;
-};
-
-export type LanguageFooter = {
-  playlist: Item[];
-  artist: Item[];
-  album: Item[];
-  actor: Item[];
-};
-
-
-
  
