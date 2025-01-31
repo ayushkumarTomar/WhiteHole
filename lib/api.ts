@@ -90,16 +90,7 @@ export const getSongDetails = async (songId: string): Promise<SongCollection> =>
   });
 };
 
-// Fetch details of a specific artist
-export const getAristDetails = async (artistId: string): Promise<ArtistInfo> => {
-  return await fetchData({
-    __call: 'content.getAlbumDetails',
-    _format: 'json',
-    cc: 'in',
-    _marker: '0',
-    artistId,
-  });
-};
+
 export const getTopShows = async() : Promise<TopShows> =>{
   return await fetchData({
     __call: 'content.getTopShows',
@@ -119,5 +110,19 @@ export const getShowDetails = async(showId:string) : Promise<EpisodeList> =>{
   }); 
 }
 
+export const getArtistDetails = async (artistId: string): Promise<ArtistInfo> => {
+  return await fetchData({
+    __call: 'artist.getArtistPageDetails',
+    artistId,
+    ctx: 'wap6dot0',
+    api_version: '4',
+    _format: 'json',
+    _marker: '0',
+    n_song:100 ,
+    n_album :0,
+    page: 1,
+    sort_order:"desc" ,
+    category:'popularity' ,
 
-
+  });
+};
