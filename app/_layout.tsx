@@ -2,7 +2,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import 'react-native-reanimated';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -13,18 +13,16 @@ import * as Linking from 'expo-linking';
 import Loading from '@/components/loading';
 
 export {
-  // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
 };
-TrackPlayer.registerPlaybackService(() => require("../service"))
+// TrackPlayer.registerPlaybackService(() => require("../service"))
+let isServiceRegistered = false;
+let isPlayerInitialized = false;
 
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -34,9 +32,9 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
   const { setPlayerReady, currentTrack, setTrack } = useMediaStore()
+  const initializationRef = useRef<Promise<void> | null>(null);
 
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -48,46 +46,88 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  //   const setUpPlayer = async () => {
+  //     try {
+
+  //       await TrackPlayer.setupPlayer(
+  //         {
+  //           maxCacheSize: 1024 * 10
+  //         }
+  //       );
+  //       await TrackPlayer.updateOptions({
+  //         capabilities: [
+  //           Capability.Play,
+  //           Capability.Pause,
+  //           Capability.SkipToNext,
+  //           Capability.SkipToPrevious,
+  //           Capability.Stop,
+  //           Capability.SeekTo
+  //         ],
+  //       });
+  //       await TrackPlayer.reset();
+  //       console.log('Track Player Setup Complete');
+  //     } catch (error) {
+  //       console.log('Error setting up track player:', error);
+  //     }
+  //     finally {
+  //       setPlayerReady(true)
+  //     }
+  //   };
+  //   setUpPlayer();
+  // }, []);
 
   useEffect(() => {
-    const setUpPlayer = async () => {
-      try {
-
-        await TrackPlayer.setupPlayer(
-          {
-            maxCacheSize: 1024 * 10
-          }
-        );
-        await TrackPlayer.updateOptions({
-          capabilities: [
-            Capability.Play,
-            Capability.Pause,
-            Capability.SkipToNext,
-            Capability.SkipToPrevious,
-            Capability.Stop,
-            Capability.SeekTo
-          ],
-        });
-        await TrackPlayer.reset();
-        console.log('Track Player Setup Complete');
-      } catch (error) {
-        console.log('Error setting up track player:', error);
-      }
-      finally {
-        setPlayerReady(true)
+    const registerService = () => {
+      if (!isServiceRegistered) {
+        TrackPlayer.registerPlaybackService(() => require("../service"));
+        isServiceRegistered = true;
       }
     };
+
+    registerService();
+
+    const setUpPlayer = async () => {
+      try {
+        if (!initializationRef.current) {
+          initializationRef.current = (async () => {
+            if (!isPlayerInitialized) {
+              await TrackPlayer.setupPlayer({ maxCacheSize: 1024 * 10 });
+              await TrackPlayer.updateOptions({
+                capabilities: [
+                  Capability.Play,
+                  Capability.Pause,
+                  Capability.SkipToNext,
+                  Capability.SkipToPrevious,
+                  Capability.Stop,
+                  Capability.SeekTo
+                ],
+              });
+              isPlayerInitialized = true;
+            }
+            await TrackPlayer.reset();
+            console.log('Track Player Setup Complete');
+          })();
+        }
+        await initializationRef.current;
+      } catch (error) {
+        console.log('Error setting up track player:', error);
+      } finally {
+        setPlayerReady(true);
+      }
+    };
+
     setUpPlayer();
+
+    return () => {
+      initializationRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
     const handleDeepLink = async (event: any) => {
       const { url } = event;
-      console.log("url is :: ", url)
       if (url && url.includes('trackplayer://notification.click')) {
-        console.log("url matched")
         const track = await TrackPlayer.getActiveTrack()
-        console.log("deep link set to false")
         if (track) {
           //@ts-ignore
 
@@ -107,7 +147,7 @@ export default function RootLayout() {
 
   usePlayerManager()
   if (!loaded) {
-    return null; // Wait for both fonts and player setup to be complete
+    return <Loading/>;
   }
 
 

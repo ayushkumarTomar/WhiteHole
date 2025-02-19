@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -6,19 +6,17 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Loading from '@/components/loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ms, s, vs } from 'react-native-size-matters';
+import { s, vs } from 'react-native-size-matters';
 import { Raleway_500Medium, useFonts } from '@expo-google-fonts/raleway';
 import { combineMetaDataWithSong, deleteDownloadedSong, getFavourites, listDownloadedSongs, removeDownloadedMetaData, removeFavourite } from '@/lib/storage';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Link } from 'expo-router';
-           import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-           import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Track } from '@/lib/mediaProcess';
 
 interface ListItemProps {
@@ -71,19 +69,20 @@ const Downloads = () => {
   useEffect(() => {
     const loadDownloads = async () => {
       const downloadArray = await combineMetaDataWithSong();
-      console.log("downloaded array :: " , downloadArray)
       setDownloads(downloadArray);
       setIsLoading(false);
     };
     loadDownloads();
   }, []);
 
-  if (!fontsLoaded || isLoading) return <Loading />;
 
-  const renderHeader = () => (
-    <View style={styles.albumHeader}>
-      <Text style={styles.playlistHeader}>Downloads</Text>
-    </View>
+  const renderHeader = useMemo(
+    () => (
+      <View style={styles.albumHeader}>
+        <Text style={styles.playlistHeader}>Downloads</Text>
+      </View>
+    ),
+    []
   );
 
   const handleDelete = (songId: string) => {
@@ -91,6 +90,9 @@ const Downloads = () => {
     removeDownloadedMetaData(songId)
     setDownloads(prev => prev.filter(el => el.songId !== songId));
   };
+
+  if (!fontsLoaded || isLoading) return <Loading />;
+
 
   return (
     <SafeAreaProvider>

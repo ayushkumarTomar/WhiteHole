@@ -61,7 +61,6 @@ const Player = () => {
   const checkIsFavourite = async()=>{
     if(currentTrack){
       const isFav = await checkFavourite(currentTrack.songId);
-      console.log("is fav returned :: " , isFav)
       setIsFavourite(isFav)
 
     }
@@ -72,7 +71,6 @@ const Player = () => {
   
       if(isFavourite){
 
-        console.log("Removing favourite")
 
 
         removeFavourite(currentTrack.songId);
@@ -86,7 +84,6 @@ const Player = () => {
     }
 
   useEffect(() => {
-    console.log("checking favoruite")
     checkIsFavourite()
     
   } , [currentTrack])
@@ -114,7 +111,7 @@ const Player = () => {
           <Ionicons
             name={isBuffering? 'pause' : isPlaying ? 'pause' : 'play'}
             size={22}
-            onPress={()=>{console.log("clicked pause");setPlayback(!isPlaying)}}
+            onPress={()=>{setPlayback(!isPlaying)}}
             color={currentTrack?.artwork ? 'white' : 'gray'}
             style={{ marginHorizontal: 10 }}
 

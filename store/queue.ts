@@ -5,10 +5,8 @@ import {create} from "zustand"
 
 
 interface Store {
-  // Authentication state
-  token: string | null; // Authentication token (Bearer token)
+  token: string | null; 
 
-  // Playback state
   isPlaying: boolean;
   currentTrack: Track | null;
   currentTrackIndex: number;
@@ -23,29 +21,28 @@ interface Store {
   
   songLoading:boolean;
 
-  // Playlist and queue state
   playlist: Track[];
   queue: Track[];
   currentPlaylistId: string | null;
   downloadProgress:number;
+
   setDownloadProgress :(downloadProgress:number)=>void;
   setPlayerReady : (ready:boolean)=>void;
 
   setBuffering: (buffering: boolean) => void;
 
-  // Actions
   setPlayback: (isPlaying: boolean) => void;
   setTrack: (track: Track | null) => void;
   setTrackIndex: (index: number) => void;
   setPlaylist: (playlist: Track[]) => void;
   setQueue: (queue: Track[]) => void;
+  resetPlayer: () => void;
+
 
  
 }
 
-// Zustand store with TypeScript types
 const useMediaStore = create<Store>((set) => ({
-  // Authentication state
   user: null,
   token: null,
   songLoading:false,
@@ -67,13 +64,10 @@ const useMediaStore = create<Store>((set) => ({
   downloadProgress:0,
   setDownloadProgress : (downloadProgress)=> set({downloadProgress:downloadProgress}) ,
 
-  
 
   setBuffering: (buffering) => set({isBuffering:buffering}) ,
 
-  // Actions
   setPlayback: async(isPlaying) => {
-    console.log("Called me")
     if(isPlaying) 
       await TrackPlayer.play()
     else await TrackPlayer.pause()
@@ -108,16 +102,14 @@ const useMediaStore = create<Store>((set) => ({
     if(!d) return;
     parsedData = d;
 
-    console.log("500x500 artwork is :: " , parsedData.artwork)}
+}
     else{
       //@ts-ignore
       parsedData = offlineSongData
     }
-      console.log("Adding song :: " , parsedData)
-    
+      
       const queue = await TrackPlayer.getQueue();
       const alreadyExist = queue.findIndex((track) => track.songId === parsedData.songId);
-      console.log("already exsiting?? " , alreadyExist)
       if(alreadyExist!==-1) await TrackPlayer.remove(alreadyExist);
       if (type === "addToQueue") {
         await TrackPlayer.add(parsedData);
@@ -152,6 +144,10 @@ const useMediaStore = create<Store>((set) => ({
     await TrackPlayer.setQueue(queue)
   },
   
+  resetPlayer: async() => {
+    await TrackPlayer.reset();
+    set({ queue: [] });
+  },
 }));
 
 

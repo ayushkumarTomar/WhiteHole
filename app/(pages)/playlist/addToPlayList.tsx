@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,30 +14,28 @@ import Loading from '@/components/loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { s, vs } from 'react-native-size-matters';
 import { Raleway_500Medium, useFonts } from '@expo-google-fonts/raleway';
-import { useLocalSearchParams, router } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getPlaylists, savePlaylist } from '@/lib/storage';
 import PlayListModal from '@/components/playlistModal';
-import useMediaStore from '@/store/queue';
 import { getSongParsedData } from '@/lib/mediaProcess';
 import { PlaylistStorage } from '@/types/playlist';
 
 const AddToPlaylistScreen = () => {
-  // Get the song ID from route params so we know which song to add
-  const { songId } = useLocalSearchParams<{ songId: string }>();
-  const [fontsLoaded] = useFonts({ Raleway_500Medium });
+  const { songId } = useLocalSearchParams<{ songId: string }>()
+  const [fontsLoaded] = useFonts({ Raleway_500Medium })
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [playlists, setPlaylists] = useState<any>(null);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [playlists, setPlaylists] = useState<any>(null)
+  const [modalVisible, setModalVisible] = useState(false)
 
 
   useEffect(() => {
 
     const loadPlaylists = async () => {
 
-      const playlistArray = await getPlaylists();
-      setPlaylists(playlistArray);
+      const playlistArray = await getPlaylists()
+      setPlaylists(playlistArray)
       setIsLoading(false)
     };
     loadPlaylists();
@@ -133,12 +131,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     height: '60%',
-  },
-  headerTitle: {
-    fontFamily: 'Raleway_500Medium',
-    fontSize: vs(15),
-    marginTop: vs(10),
-    color: 'white',
   },
   playlistItem: {
     paddingVertical: vs(15),

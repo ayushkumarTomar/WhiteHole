@@ -1,5 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Image, SafeAreaView, TouchableOpacity, ToastAndroid, Pressable } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { s, vs } from 'react-native-size-matters';
@@ -12,19 +11,22 @@ import LoaderKit from 'react-native-loader-kit'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Swipeable } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
-
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 const Queue = () => {
   const [fontsLoaded] = useFonts({ Raleway_500Medium });
 
-  const { queue, setQueue, currentTrack, isPlaying, addTrack, removeTrack } = useMediaStore()
+  const { queue, setQueue, currentTrack, isPlaying, resetPlayer , removeTrack } = useMediaStore()
 
   if (!queue || !fontsLoaded) return <Loading />
 
   const renderHeader = () => (
-    <Text style={styles.playlistHeader}>Queue</Text>
+    <View>
+      <Text style={styles.playlistHeader}>Queue</Text>
+      <Text style={{position:'absolute' , right:vs(10) , top:vs(35) , color:'white' , fontFamily:"Raleway_500Medium"}} onPress={resetPlayer}> Clear All</Text>
+    
+    </View>
   );
   const onDelete = (songId : string)=>{
-    console.log("Deleting :: " , songId)
     removeTrack(songId)
     
 
@@ -121,22 +123,6 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
   },
-  albumHeader: {
-    alignItems: 'center',
-    paddingVertical: vs(20),
-  },
-  albumCover: {
-    width: vs(150),
-    height: vs(150),
-    borderRadius: vs(10),
-  },
-  albumTitle: {
-    fontFamily: 'Raleway_500Medium',
-    color: 'white',
-    fontSize: vs(12),
-    marginTop: vs(10),
-    textAlign: 'center',
-  },
   trackPlayingIconIndicator: {
     position: 'absolute',
     top: vs(18),
@@ -145,37 +131,11 @@ const styles = StyleSheet.create({
     height: vs(16),
     textAlign: 'center',
   },
-  artistName: {
-    fontFamily: 'Raleway_500Medium',
-    color: '#bbb',
-    fontSize: vs(10),
-    marginBottom: vs(5),
-    alignSelf: 'center',
-    textAlign: 'center'
-  },
-  songCount: {
-    fontFamily: 'Raleway_500Medium',
-    color: '#888',
-    fontSize: vs(8),
-    marginBottom: vs(15),
-  },
   songImage: {
     width: s(30),
     height: vs(30),
     borderRadius: vs(15),
     marginRight: s(20)
-  },
-  playAllButton: {
-    backgroundColor: '#0A84FF',
-    borderRadius: vs(5),
-    paddingHorizontal: s(15),
-    paddingVertical: vs(5),
-    marginBottom: vs(10),
-  },
-  playAllText: {
-    fontFamily: 'Raleway_500Medium',
-    color: 'white',
-    fontSize: vs(10),
   },
   songItem: {
     flexDirection: 'row',
@@ -199,22 +159,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Raleway_500Medium',
     color: '#696969',
     fontSize: vs(8),
-  },
-  menuButtonText: {
-    fontSize: vs(14),
-    color: 'white',
-  },
-  menuOptions: {
-    backgroundColor: 'transparent', // Slightly transparent blue for clearer visibility
-    padding: vs(10),
-    elevation: 10,
-
-    borderRadius: vs(5),
-
-  },
-  menuOption: {
-    fontFamily: 'Raleway_500Medium',
-    color: 'white'
   },
   leftSwipeContainer: {
     justifyContent: 'center',

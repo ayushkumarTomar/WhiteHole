@@ -17,16 +17,6 @@ export default function PagesLayout() {
           name="playlist"
           options={{headerShown:false}}
         />
-
-      {/* <Stack.Screen
-          name="playlist/[playListId]"
-          options={{
-            title: 'Playlist Details',
-            headerShown: false,
-            animation:"slide_from_right"
-          }}
-        /> */}
-
       <Stack.Screen
           name="library"
           options={{
@@ -40,6 +30,15 @@ export default function PagesLayout() {
             title: 'Album Details',
             headerShown: false,
             animation:'slide_from_left'
+          }}
+        />
+
+      <Stack.Screen
+          name="artist/[artistId]"
+          options={{
+            title: 'Artist Details',
+            headerShown: false,
+            animation:'simple_push'
           }}
         />
         <Stack.Screen

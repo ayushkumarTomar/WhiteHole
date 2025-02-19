@@ -8,41 +8,38 @@ export interface Track extends DefaultTrack {
 }
 import he from "he"
 
+import { getQuality } from './shared';
+
 export function parseString(name:string){
   return he.decode(name).replace(/\s*\(.*\)\s*$/, '')
 }
 
 export function decryptUrl(encryptedUrl: string, key: string) {
-  // Decrypt the base64-encoded URL using DES
   const bytes = CryptoJS.DES.decrypt(encryptedUrl, CryptoJS.enc.Utf8.parse(key), {
-    iv: CryptoJS.enc.Utf8.parse('0000000000000000'), // padding (zero)
+    iv: CryptoJS.enc.Utf8.parse('0000000000000000'), 
     mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7, // Same padding as in pyDes in Python
+    padding: CryptoJS.pad.Pkcs7, 
   });
 
   const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-  return decrypted.replace("_96.mp4", "_320.mp4"); // Adjust as in Python
+  return decrypted.replace("_96.mp4", "_320.mp4"); 
 }
 
 
 export function processMediaUrls(data: any) {
   try {
-    // Decrypt the media URL
-    const decryptedMediaUrl = decryptUrl(data.encrypted_media_url, '38346591'); // Use the same key from Python
+    const decryptedMediaUrl = decryptUrl(data.encrypted_media_url, '38346591'); 
     data.media_url = decryptedMediaUrl;
 
-    // Adjust URL based on 320kbps flag
     if (data['320kbps'] !== "true") {
       data.media_url = data.media_url.replace("_320.mp4", "_160.mp4");
     }
 
-    // Update media preview URL
     data.media_preview_url = data.media_url
       .replace("_320.mp4", "_96_p.mp4")
       .replace("_160.mp4", "_96_p.mp4")
       .replace("//aac.", "//preview.");
   } catch (error) {
-    // Fallback logic for failed decryption or missing keys
     let url = data.media_preview_url || '';
     if (url) {
       url = url.replace("preview", "aac");
@@ -58,8 +55,13 @@ export function processMediaUrls(data: any) {
 }
 
 
-export function parseTrackPlayer(songData:any): Track {
+export async function parseTrackPlayer(songData:any): Track {
   const input = processMediaUrls(songData)
+
+  const quality = await getQuality();
+        
+  input.url = input.media_url.replace("_320.mp4", `_${quality}.mp4`);
+        
   return {
     songId : input.id ,
     url: input.media_url, 
@@ -81,8 +83,9 @@ export async function getSongParsedData(songId: string) {
           return;
         }
         
-        const parsedData = parseTrackPlayer(songDetails[songId]);
-        console.log("Parsed data for TrackPlayer:", parsedData);
+        const parsedData = await parseTrackPlayer(songDetails[songId]);
+        
+        // console.log("Parsed data for TrackPlayer:", parsedData);
 
         return parsedData
 }

@@ -4,7 +4,7 @@ import { useFonts , Montserrat_500Medium } from '@expo-google-fonts/montserrat';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { View , StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import {vs , s} from "react-native-size-matters"
+import {vs} from "react-native-size-matters"
 import {BottomTabBar} from "@react-navigation/bottom-tabs"
 import Player from '@/components/player';
 
@@ -15,7 +15,7 @@ export default function TabLayout() {
     
     
       if (!fontsLoaded) {
-        return null; // Display a loading indicator here if needed
+        return null;
       }   
 
     
@@ -29,12 +29,11 @@ export default function TabLayout() {
             tabBarStyle: {
               position: 'absolute',
               paddingBottom:vs(3) ,
-              overflow: 'hidden', // Ensures the blur effect is applied properly
+              overflow: 'hidden', 
               borderTopWidth:0 ,
               borderBottomWidth:0 ,
               backgroundColor: 'transparent',
               elevation: 0,
-            // shadowOpacity: 0,
             },
            
             
@@ -44,8 +43,8 @@ export default function TabLayout() {
             },
             tabBarBackground : ()=> (
                 <LinearGradient
-              colors={['transparent', 'rgba(0, 0, 0, 1)']} // Define the gradient colors
-              style={styles.gradient} // Apply styles
+              colors={['transparent', 'rgba(0, 0, 0, 1)']} 
+              style={styles.gradient} 
             />
             ),
             // tabBarBackground: () => (
@@ -96,15 +95,15 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
     tabBarContainer: {
       flex: 1,
-      backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent background for better blending
+      backgroundColor: 'rgba(255, 255, 255, 0.2)', 
       overflow: 'hidden',
     },
     gradient: {
         position: 'absolute',
         left: 0,
         right: 0,
-        top: 0, // Position it to cover the tab bar area
-        height: 60, // Adjust height to match your tab bar height
+        top: 0,
+        height: 60,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
       },

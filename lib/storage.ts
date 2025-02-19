@@ -112,7 +112,7 @@ export const downloadSong = async (songData:Track) => {
   const fileInfo = await FileSystem.getInfoAsync(fileUri);
 
   if (fileInfo.exists || (await getDownloadMetaData(songData.songId))) {
-    useMediaStore.getState().setDownloadProgress(100); // Already downloaded
+    useMediaStore.getState().setDownloadProgress(100);
     return fileUri;
   }
 
@@ -123,17 +123,17 @@ export const downloadSong = async (songData:Track) => {
       {},
       (downloadProgress) => {
         const progress = (downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite) * 100;
-        useMediaStore.getState().setDownloadProgress(progress); // Update Zustand store
+        useMediaStore.getState().setDownloadProgress(progress); 
       }
     );
 
     const d = await downloadResumable.downloadAsync();
-    useMediaStore.getState().setDownloadProgress(100); // Set to 100% after download
+    useMediaStore.getState().setDownloadProgress(100); 
     setDownloadMetaData(songData.songId , songData)
     return d?.uri;
   } catch (error) {
     console.error('Download failed:', error);
-    useMediaStore.getState().setDownloadProgress(0); // Reset on error
+    useMediaStore.getState().setDownloadProgress(0); 
     return null;
   }
 };
@@ -201,3 +201,11 @@ export const combineMetaDataWithSong = async () => {
   }
 };
 
+
+export const saveUsername = async (username: string) => { 
+  await AsyncStorage.setItem("username" , username);
+};
+
+export const getUsername = async () => {
+  return await AsyncStorage.getItem("username") ?? "Tangerine";
+}

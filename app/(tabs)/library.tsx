@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, ScrollView, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Text, View, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Montserrat_500Medium, Montserrat_600SemiBold, Montserrat_700Bold, useFonts } from '@expo-google-fonts/montserrat';
 import { getLastSession, getPlaylists } from '@/lib/storage';
 import { s, vs } from 'react-native-size-matters';
@@ -9,34 +9,14 @@ import { Entypo } from '@expo/vector-icons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'; 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'; 
 import { Link } from 'expo-router';
-
+import Loading from '@/components/loading';
 const Library = () => {
   const [fontsLoaded] = useFonts({
     Montserrat_700Bold,
     Montserrat_600SemiBold,
     Montserrat_500Medium
   });
-
-  const [playlists, setPlaylists] = useState<any>(null);
-  const [lastSession, setLastSession] = useState<any>(null);
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
-  useEffect(() => {
-    const iffy = async () => {
-      const p = await getPlaylists();
-      console.log("getting playlists :: ", p);
-      setPlaylists(p);
-      const lst = await getLastSession();
-      setLastSession(lst);
-    };
-    iffy();
-  }, []);
-
-  // if (!fontsLoaded || playlists == null) return <Loading />;
+  if(!fontsLoaded) return <Loading/>;
 
   return (
     <SafeAreaProvider>
@@ -47,7 +27,6 @@ const Library = () => {
         />
         <ScrollView>
           <View style={styles.header}>
-          {/* <MaterialCommunityIcons name="book-music-outline" size={24} color="white" /> */}
 
             <Entypo name="folder-music" size={24} color="white" />
             <Text style={styles.headerText}>

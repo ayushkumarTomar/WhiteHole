@@ -13,14 +13,8 @@ import { s, vs } from 'react-native-size-matters';
 import { Montserrat_700Bold, Montserrat_600SemiBold, Montserrat_500Medium, useFonts } from "@expo-google-fonts/montserrat"
 import SearchResults from '@/components/searchResults';
 import Loading from '@/components/loading';
+import { TrendingSearches } from '@/types/search';
 
-// type searchDataType = {
-//   topquery:{} ,
-//   artists:{} ,
-//   albums:{},
-//   shows:{} ,
-//   playlists:{}
-// }
 type searchDataType = {
   topquery: Record<string, any>;
   artists: Record<string, any>;
@@ -40,15 +34,14 @@ const Explore = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchTerm = useDebounce(searchQuery, 300);
 
-  const { data: trendingData, isLoading: isLoadingTrending } = useQuery<any[], Error>({
+  const { data: trendingData, isLoading: isLoadingTrending } = useQuery<TrendingSearches[], Error>({
     queryKey: ['trendingSearches'],
     queryFn: getSearchTrending
   });
   const { data: searchData, isLoading: isLoadingSearchData } = useQuery<searchDataType, Error>({
     queryKey: ['searchAll', debouncedSearchTerm],
-      //@ts-ignore
-    queryFn: () => getTopSearches(debouncedSearchTerm),
-    enabled: debouncedSearchTerm !== "", // Only fetch if there's a search query
+      queryFn: () => getTopSearches(debouncedSearchTerm) as Promise<searchDataType>,
+      enabled: debouncedSearchTerm !== "", 
   });
 
   if (!fontsLoaded) return <Loading/>;
@@ -69,7 +62,6 @@ const Explore = () => {
             </Text>
           </View>
 
-          {/* Search Bar */}
           <View style={styles.searchContainer}>
             <AntDesign name="search1" size={18} color="#888" style={styles.searchIcon} />
             <TextInput
@@ -82,11 +74,10 @@ const Explore = () => {
           </View>
           {isLoadingSearchData || isLoadingTrending ? <ActivityIndicator size={50} color={'white'} style={{ marginTop: vs(40) }} /> :
             searchQuery === "" ? (
-              // Show trending searches if no search query
               <TrendingSearch title="Trending Searches" continueListeningData={trendingData} />
             ) : (
               <>
-
+                
                 {searchData?.topquery.data.length > 0 && <SearchResults title="Top Result" continueListeningData={searchData?.topquery} type="topquery" />}
                 {searchData?.songs.data.length > 0 && <SearchResults title="Songs" continueListeningData={searchData?.songs} type="songs" />}
                 {searchData?.albums.data.length > 0 && <SearchResults title="Albums" continueListeningData={searchData?.albums} type="albums" />}
@@ -106,7 +97,6 @@ const Explore = () => {
   );
 };
 
-// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

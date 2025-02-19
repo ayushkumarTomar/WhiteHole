@@ -43,7 +43,6 @@ const SearchResults = ({ continueListeningData, title }: any) => {
         const title = item.title
         const type = item.type
         const imageLink = item.image.replace(/-(\d+)x(\d+)(?=\.\w+($|\?))/, "-500x500").replace("_50x50" , "_500x500");
-        console.log("item is :: ", item)
         const redirectLink = extractData(item) || "/(tabs)/explore"
         return (
             <TouchableOpacity
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         margin: vs(3),
         borderRadius: vs(20),
         // gap: s(10),
-        height: vs(200),
+        height: vs(190),
         width: vs(140)
 
 
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: "Montserrat_600SemiBold",
         alignSelf: 'center',
-        fontSize: vs(13)
+        fontSize: vs(11)
 
     },
 

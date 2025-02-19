@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { s, vs } from 'react-native-size-matters'
 import { BlurView } from 'expo-blur';
 import { router } from 'expo-router';
+import useLazyLoad from '@/hooks/useLazyLoad';
 
 type ChartType = "new_trending" | "top_playlists" | "new_albums" | "browse_discover" | "global_config" | "charts" | "radio" 
 const extractData = (type :ChartType , data:any)=>{
@@ -89,8 +90,7 @@ const extractData = (type :ChartType , data:any)=>{
 
 
 const TrendingChart = ({ continueListeningData , title , type }: any) => {
-
-
+    const { data, loadMore, isLoading } = useLazyLoad(continueListeningData, 5);
     const trendingItem = ({ item }: any) => {
         const {artists , title , imageLink , redirectLink} = extractData(type ,item)  
         
@@ -120,9 +120,19 @@ const TrendingChart = ({ continueListeningData , title , type }: any) => {
             <Text style={styles.continueText}>{title} </Text>
             <FlatList
                 horizontal
-                data={continueListeningData}
+                data={data}
                 renderItem={trendingItem}
+                keyExtractor={(item, index) => `${type}-${index}`}
+                onEndReached={loadMore} 
+                onEndReachedThreshold={0.9}
+                ListFooterComponent={
+                    
+                    isLoading ?<View style={styles.loadingContainer}>
+                    <ActivityIndicator style={{alignSelf:'center' , alignContent:'center'}} size="large" color="white" />
+                </View>:null    
+                  }
             />
+            
 
         </View>
 
@@ -164,6 +174,14 @@ const styles = StyleSheet.create({
 
     },
 
+    loadingContainer: {
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: vs(55),
+        paddingHorizontal: s(10),
+        // alignContent:'center'
+    },
 })
 
 
