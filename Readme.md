@@ -1,21 +1,22 @@
 
- 🚀 **An Open-Source, High-Performance Music Streaming App** 🎶  
+ ## 🎧 **WhiteHole – An Open-Source , High-Performance Music Streaming App**🚀 🎶
  
  [![React Native](https://img.shields.io/badge/Made%20with-React%20Native-blue)](https://reactnative.dev/)  
- [![License](https://img.shields.io/github/license/yourusername/whitehole)](LICENSE)  
+ [![License](https://img.shields.io/github/license/ayushkumarTomar/whitehole)](LICENSE)  
  [![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen)](#contribute)  
  [![Version](https://img.shields.io/github/v/release/ayushkumartomar/whitehole)](https://github.com/ayushkumartomar/whitehole/releases)  
  
- 🔥 **Inspired by the now-discontinued BlackHole Project**, WhiteHole aims to bring back the seamless music streaming experience in a fresh way with **React Native**.  
- 
- 
- ### 🌐 **Public Release Coming Soon!** Stay tuned!  
+ 🔥 **Inspired by the now-discontinued BlackHole project — originally built with Flutter — WhiteHole brings back the seamless music streaming experience with a fresh, modern approach using React Native.
+Enjoy high-quality music streaming, smart search, offline playback, and much more — all in one lightweight app React Native**.  
+*Enjoy high-quality music streaming, smart search, offline playback, and much more — all in one lightweight app*
  
  ---
  
  ## 📥 Download  
  
- Coming soon... 🚀  
+👉 [Check the releases]((https://github.com/ayushkumartomar/whitehole/releases)
+
+Stores -:  Coming soon... 🚀  
  
  ---
  
@@ -36,7 +37,14 @@
  
  ## 📸 Screenshots  
  
- <img src="ss1.png" width="30%"> <img src="ss2.png" width="30%"> <img src="ss3.png" width="30%">  
+ 
+ <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Search.jpeg" width="30%">
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Home.jpeg" width="30%"> 
+ 
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Album.jpeg" width="30%"> 
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Home2.jpeg" width="30%"> 
+ 
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/ContextMenu.jpeg" width="30%"> 
  
  
  
