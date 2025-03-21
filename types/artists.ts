@@ -30,7 +30,7 @@ export type ArtistInfo = {
       albums: TopAlbumAritst[];
       // total: number;
     };
-    similarArtists: any[]; // This is an empty array in the example, adjust based on future data
+    similarArtists: any[]; 
     isRadioPresent: boolean;
     bio: string[];
     dob: string;

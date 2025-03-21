@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   menuOptions: {
-    backgroundColor: 'transparent', // Slightly transparent blue for clearer visibility
+    backgroundColor: 'transparent', 
     padding: vs(10),
     elevation:10 ,
     

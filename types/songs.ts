@@ -41,8 +41,8 @@ export type Song = {
       delete_cached_object: boolean;
     };
     webp: boolean;
-    cache_state?: string;  // optional field to match the example data
-    starred: string;  // could be boolean depending on your data
+    cache_state?: string;  // ye optional field hai
+    starred: string;  
     artistMap: Record<string, string>;
     release_date: string;
     vcode: string;

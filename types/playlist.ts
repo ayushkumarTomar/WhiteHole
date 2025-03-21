@@ -5,7 +5,7 @@ export type Playlist = {
     artists: string[];
     listid: string;
     listname: string;
-    content_list: string[]; // List of content IDs (e.g., song IDs)
+    content_list: string[]; 
     perma_url: string;
     follower_count: string;
     uid: string;

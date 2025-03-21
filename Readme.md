@@ -14,7 +14,7 @@ Enjoy high-quality music streaming, smart search, offline playback, and much mor
  
  ## 📥 Download  
  
-👉 [Check the releases]((https://github.com/ayushkumartomar/whitehole/releases)
+👉 [Check the releases](https://github.com/ayushkumartomar/whitehole/releases)
 
 Stores -:  Coming soon... 🚀  
  
@@ -36,17 +36,15 @@ Stores -:  Coming soon... 🚀
  ---
  
  ## 📸 Screenshots  
- 
- 
- <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Search.jpeg" width="30%">
-  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Home.jpeg" width="30%"> 
- 
-  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Album.jpeg" width="30%"> 
-  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Home2.jpeg" width="30%"> 
- 
-  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/ContextMenu.jpeg" width="30%"> 
- 
- 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Search.jpeg" width="30%" style="display: inline-block; margin-right: 5px;">
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Home.jpeg" width="30%" style="display: inline-block; margin-right: 5px;">
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Album.jpeg" width="30%" style="display: inline-block; margin-right: 5px;">
+</div>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/Home2.jpeg" width="30%" style="display: inline-block; margin-right: 5px;">
+  <img src="https://raw.githubusercontent.com/ayushkumarTomar/WhiteHole/refs/heads/main/screenshots/ContextMenu.jpeg" width="30%" style="display: inline-block; margin-right: 5px;">
+</div>
  
  ---
  ## 🔔 Disclaimer
